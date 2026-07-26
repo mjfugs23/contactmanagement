@@ -1,0 +1,46 @@
+<Window x:Class="ContactApp.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:ContactApp.Desktop.ViewModels"
+        Title="ContactApp - Contacts" Height="600" Width="900" WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+    <DockPanel Margin="10">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,8">
+            <TextBox Width="280" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Width="180" Margin="8,0,0,0" Text="{Binding CompanyFilter, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Content="Refresh" Width="80" Margin="8,0,0,0" Command="{Binding CmdRefresh}" />
+            <Button Content="Add" Width="80" Margin="8,0,0,0" Command="{Binding CmdAdd}" />
+            <Button Content="Edit" Width="80" Margin="8,0,0,0" Command="{Binding CmdEdit}" />
+            <Button Content="Delete" Width="80" Margin="8,0,0,0" Command="{Binding CmdDelete}" />
+            <Button Content="Export CSV" Width="100" Margin="8,0,0,0" Command="{Binding CmdExportCsv}" />
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding Contacts}" SelectedItem="{Binding Selected, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="50" />
+                <DataGridTextColumn Header="First" Binding="{Binding FirstName}" Width="120" />
+                <DataGridTextColumn Header="Last" Binding="{Binding LastName}" Width="120" />
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200" />
+                <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" Width="110" />
+                <DataGridTextColumn Header="Company" Binding="{Binding Company}" Width="140" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border DockPanel.Dock="Bottom" Height="100" Margin="0,8,0,0" BorderBrush="LightGray" BorderThickness="1" Padding="8">
+            <StackPanel>
+                <TextBlock Text="Reports:" FontWeight="Bold" />
+                <TextBlock Text="(Counts by company shown below)" FontStyle="Italic" />
+                <ItemsControl ItemsSource="{Binding Contacts}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Company}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+    </DockPanel>
+</Window>
